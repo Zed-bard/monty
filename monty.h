@@ -78,7 +78,7 @@ void monty_pall(stack_t **head, unsigned int number);
 /* pint */
 void monty_pint(stack_t **head, unsigned int number);
 /*execute */
-int execute(char *content, stack_t **head, unsigned int counter, FILE *file);
+int exe(char *content, stack_t **head, unsigned int counter, FILE *file);
 /*execute */
 void free_stack(stack_t *head);
 /*pop */
