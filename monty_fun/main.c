@@ -8,13 +8,8 @@ int main(int ac, char **av)
 		dprintf(2, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	FILE *file = fopen(av[1], "r");
-	if (file == NULL)
-	{
-		dprintf(2, "Error: Can't open file %s\n", av[1]);
-		exit(EXIT_FAILURE);
-	}
-	parse(file, stack);
+
+	parse(av[1], stack);
 	fclose(file);
 	return (0);
 }

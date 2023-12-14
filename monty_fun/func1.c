@@ -1,7 +1,7 @@
 #include "monty.h"
 #include <stdio.h>
 
-char *parse(FILE *file, stack_t *stack)
+char *parse(char *file_name, stack_t *stack)
 {
 	int i = 0;
 	instruction_t funs[] = {{"push", push}, {NULL, NULL}};
@@ -10,7 +10,11 @@ char *parse(FILE *file, stack_t *stack)
 	char command[4];
 	size_t *n;
 
-	while (getline(&line, &n, file) != -1)
+	FILE *f = fopen(file_name, "r");
+	if (f == NULL)
+	{
+		
+	while (getline(&line, n, file) != -1)
 	{
 		line_number++;
 		command = strtok(line, " \t\n");
@@ -21,11 +25,11 @@ char *parse(FILE *file, stack_t *stack)
 			{
 				funs[i].f(stack, line_number);
 				free(line);
-				return (argument);
 			}
 			i++;
 		}
 		free(line);
+		fclose();
 		dprintf(2, "L%d: unknown instruction %s\n", line_number, command);
 		exit(EXIT_FAILURE);
 	}
