@@ -2,13 +2,15 @@
 
 int main(int ac, char **av)
 {
+	FILE *f;
 	stack_t *stack = NULL;
+
 	if (ac != 2)
 	{
 		dprintf(2, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	FILE *f = fopen(av[1], "r");
+	f = fopen(av[1], "r");
 	if (f == NULL)
 	{
 		dprintf(2, "Error: Can't open file %s\n", av[1]);

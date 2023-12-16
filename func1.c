@@ -1,4 +1,5 @@
 #include "monty.h"
+#include <stdio.h>
 
 /**
  * parse - parses input
@@ -15,7 +16,7 @@ char *parse(char *file_name, stack_t *stack)
 	instruction_t funs[] = {{"push", push}, {NULL, NULL}};
 	char *line = NULL;
 	unsigned int line_number = 0;
-	char *command = NULL, *argument = NULL;
+	char *command = NULL;
 	size_t len = 0;
 	ssize_t read;
 
@@ -72,6 +73,11 @@ void push(stack_t **stack, unsigned int line_number)
 	if (new == NULL)
 	{
 		dprintf(2, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	if (!helper.arg)
+	{
+		dprintf(2, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 	new->n = helper.arg;
