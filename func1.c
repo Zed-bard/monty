@@ -10,7 +10,7 @@
 
 extern int arg;
 
-char *parse(char *file_name, stack_t *stack)
+char *parse(FILE *f, stack_t *stack)
 {
 	int i = 0;
 	instruction_t funs[] = {{"push", push}, {NULL, NULL}};
@@ -19,13 +19,6 @@ char *parse(char *file_name, stack_t *stack)
 	char *command = NULL;
 	size_t len = 0;
 	ssize_t read;
-
-	FILE *f = fopen(file_name, "r");
-	if (f == NULL)
-	{
-		dprintf(2, "Error: Can't open file %s\n", file_name);
-		exit(EXIT_FAILURE);
-	}
 		
 	while ((read = getline(&line, &len, f)) != -1)
 	{

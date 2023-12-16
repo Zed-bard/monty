@@ -17,7 +17,7 @@ int main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 
-	parse(av[1], stack);
+	parse(f, stack);
 	fclose(f);
 	return (0);
 }
