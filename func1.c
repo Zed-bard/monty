@@ -1,14 +1,33 @@
 #include "monty.h"
-#include <stdio.h>
 
+/**
+ * is_int - checks for an integer
+ * @str: string to check
+ * Return: 0 or 1
+ */
+
+int is_int(char *str)
+{
+	int i = 0;
+
+	if (str == NULL)
+		return (0);
+	if (str[0] == '-')
+		i++;
+	while (str[i] != '\0')
+	{
+		if (!isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 /**
  * parse - parses input
  * @file_name - file
  * @stack: stack
  * Return: some args
  */
-
-extern int arg;
 
 char *parse(FILE *f, stack_t *stack)
 {
@@ -29,7 +48,7 @@ char *parse(FILE *f, stack_t *stack)
 			free(line);
 			continue;
 		}
-		helper.arg = atoi(strtok(NULL, " \t\n"));
+		helper.arg = strtok(NULL, " \t\n");
 		while (funs[i].opcode != NULL)
 		{
 			if (strcmp(command, funs[i].opcode) == 0)
@@ -68,12 +87,12 @@ void push(stack_t **stack, unsigned int line_number)
 		dprintf(2, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
-	if (!helper.arg)
+	if (!is_int(helper.arg))
 	{
 		dprintf(2, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-	new->n = helper.arg;
+	new->n = atoi(helper.arg);
 	new->next = (*stack);
 	new->prev = NULL;
 	(*stack) = new;

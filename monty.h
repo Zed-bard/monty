@@ -19,7 +19,7 @@
 
 typedef struct helper_s
 {
-	int arg;
+	char *arg;
 } helper_t;
 
 helper_t helper;
