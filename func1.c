@@ -13,7 +13,7 @@ extern int arg;
 char *parse(FILE *f, stack_t *stack)
 {
 	int i = 0;
-	instruction_t funs[] = {{"push", push}, {NULL, NULL}};
+	instruction_t funs[] = {{"push", push}, {"pall", pall}, {NULL, NULL}};
 	char *line = NULL;
 	unsigned int line_number = 0;
 	char *command = NULL;
@@ -77,4 +77,22 @@ void push(stack_t **stack, unsigned int line_number)
 	new->next = (*stack);
 	new->prev = NULL;
 	(*stack) = new;
+}
+
+/**
+ * pall - prints all values on the stack
+ * @stack: stack
+ * @line_number: line number
+ */
+
+void pall(stack_t **stack, unsigned int line_number)
+{
+	stack_t *current = *stack;
+
+	while (current != NULL)
+	{
+		printf("%d\n", current->n);
+		current = current->next;
+	}
+	(void)line_number;
 }
