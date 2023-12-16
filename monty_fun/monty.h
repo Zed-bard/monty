@@ -1,12 +1,27 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef MAIN_H
+#define MAIN_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <ctype.h>
 
-char argument[10];
+/**
+ * struct helper_s - helper struct
+ * @arg: argument to opcode
+ *
+ * Description: helper for struct_s
+ */
+
+typedef struct helper_s
+{
+	int arg;
+} helper_t;
+
+helper_t helper;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
