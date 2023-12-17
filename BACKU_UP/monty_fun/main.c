@@ -15,20 +15,8 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-<<<<<<< HEAD
 	fileRead(argv[1]);
 	free_nodes();
-=======
-	FILE *f = fopen(av[1], "r");
-	if (f == NULL)
-	{
-		dprintf(2, "Error: Can't open file %s\n", av[1]);
-		exit(EXIT_FAILURE);
-	}
-
-	parse(av[1], stack);
-	fclose(f);
->>>>>>> 24cba3a8edffb129e79ed19a2f4b6269ece84e2f
 	return (0);
 }
 
