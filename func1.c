@@ -1,6 +1,23 @@
 #include "monty.h"
 
 /**
+ * free_stack - frees stack
+ * @stack: stack
+ */
+
+void free_stack(stack_t **stack)
+{
+	stack_t *temp;
+
+	while (*stack != NULL)
+	{
+		temp = (*stack)->next;
+		free(*stack);
+		(*stack) = temp;
+	}
+}
+
+/**
  * is_int - checks for an integer
  * @str: string to check
  * Return: 0 or 1
@@ -26,10 +43,9 @@ int is_int(char *str)
  * parse - parses input
  * @file_name - file
  * @stack: stack
- * Return: some args
  */
 
-char *parse(FILE *f, stack_t *stack)
+void parse(FILE *f, stack_t **stack)
 {
 	int i = 0;
 	instruction_t funs[] = {{"push", push}, {"pall", pall}, {NULL, NULL}};
@@ -38,7 +54,7 @@ char *parse(FILE *f, stack_t *stack)
 	char *command = NULL;
 	size_t len = 0;
 	ssize_t read;
-		
+
 	while ((read = getline(&line, &len, f)) != -1)
 	{
 		line_number++;
@@ -53,7 +69,7 @@ char *parse(FILE *f, stack_t *stack)
 		{
 			if (strcmp(command, funs[i].opcode) == 0)
 			{
-				funs[i].f(&stack, line_number);
+				funs[i].f(&(*stack), line_number);
 				break;
 			}
 			i++;
@@ -61,6 +77,7 @@ char *parse(FILE *f, stack_t *stack)
 		if (funs[i].opcode == NULL)
 		{
 			dprintf(2, "L%d: unknown instruction %s\n", line_number, command);
+			free(*stack);
 			exit(EXIT_FAILURE);
 		}
 		free(line);
@@ -68,7 +85,6 @@ char *parse(FILE *f, stack_t *stack)
 		i = 0;
 	}
 	free(line);
-	exit(EXIT_SUCCESS);
 }
 
 /**
@@ -79,17 +95,17 @@ char *parse(FILE *f, stack_t *stack)
 
 void push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *new;
+	stack_t *new = NULL;
 
+	if (!is_int(helper.arg))
+	{
+		dprintf(2, "L%d: usage: push integer\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 	new = malloc(sizeof(stack_t));
 	if (new == NULL)
 	{
 		dprintf(2, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-	if (!is_int(helper.arg))
-	{
-		dprintf(2, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 	new->n = atoi(helper.arg);

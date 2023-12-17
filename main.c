@@ -17,7 +17,8 @@ int main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 
-	parse(f, stack);
+	parse(f, &stack);
 	fclose(f);
+	free_stack(&stack);
 	return (0);
 }
