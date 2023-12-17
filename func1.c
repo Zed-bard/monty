@@ -48,7 +48,7 @@ int is_int(char *str)
 void parse(FILE *f, stack_t **stack)
 {
 	int i = 0;
-	instruction_t funs[] = {{"push", push}, {"pall", pall}, 
+	instruction_t funs[] = {{"push", push}, {"pall", pall}, {"pop", pop},
 				{"pint", pint}, {NULL, NULL}};
 	char *line = NULL;
 	unsigned int line_number = 0;
