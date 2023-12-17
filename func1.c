@@ -1,132 +1,77 @@
 #include "monty.h"
 
-/**
- * free_stack - frees stack
- * @stack: stack
- */
-
-void free_stack(stack_t **stack)
-{
-	stack_t *temp;
-
-	while (*stack != NULL)
-	{
-		temp = (*stack)->next;
-		free(*stack);
-		(*stack) = temp;
-	}
-}
 
 /**
- * is_int - checks for an integer
- * @str: string to check
- * Return: 0 or 1
+ * add_to_stack - Adds a node to the stack.
+ * @utily: Pointer to the new node.
+ * @ln: Interger representing the line number of of the opcode.
  */
-
-int is_int(char *str)
+void add_to_stack(stack_t **utily, __attribute__((unused))unsigned int ln)
 {
-	int i = 0;
+	stack_t *currentElement;
 
-	if (str == NULL)
-		return (0);
-	if (str[0] == '-')
-		i++;
-	while (str[i] != '\0')
-	{
-		if (!isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-/**
- * parse - parses input
- * @file_name - file
- * @stack: stack
- */
-
-void parse(FILE *f, stack_t **stack)
-{
-	int i = 0;
-	instruction_t funs[] = {{"push", push}, {"pall", pall}, {"pop", pop},
-				{"pint", pint}, {"swap", swap}, {"add", add},
-				{"nop", nop}, {NULL, NULL}};
-	char *line = NULL;
-	unsigned int line_number = 0;
-	char *command = NULL;
-	size_t len = 0;
-	ssize_t read;
-
-	while ((read = getline(&line, &len, f)) != -1)
-	{
-		line_number++;
-		command = strtok(line, " \t\n");
-		if (command == NULL)
-			continue;
-		helper.arg = strtok(NULL, " \t\n");
-		while (funs[i].opcode != NULL)
-		{
-			if (strcmp(command, funs[i].opcode) == 0)
-			{
-				funs[i].f(&(*stack), line_number);
-				break;
-			}
-			i++;
-		}
-		if (funs[i].opcode == NULL)
-		{
-			dprintf(2, "L%d: unknown instruction %s\n", line_number, command);
-			free(*stack);
-			exit(EXIT_FAILURE);
-		}
-		free(line);
-		line = NULL;
-		i = 0;
-	}
-	free(line);
-}
-
-/**
- * push - pushes value to stack
- * @stack: stack
- * @line_number: line_number
- */
-
-void push(stack_t **stack, unsigned int line_number)
-{
-	stack_t *new = NULL;
-
-	if (!is_int(helper.arg))
-	{
-		dprintf(2, "L%d: usage: push integer\n", line_number);
+	if (utily == NULL || *utily == NULL)
 		exit(EXIT_FAILURE);
-	}
-	new = malloc(sizeof(stack_t));
-	if (new == NULL)
+	if (head == NULL)
 	{
-		dprintf(2, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
+		head = *utily;
+		return;
 	}
-	new->n = atoi(helper.arg);
-	new->next = (*stack);
-	new->prev = NULL;
-	(*stack) = new;
+	currentElement = head;
+	head = *utily;
+	head->next = currentElement;
+	currentElement->prev = head;
+}
+
+
+/**
+ * print_stack - Adds a node to the stack.
+ * @stack: Pointer to a pointer pointing to top node of the stack.
+ * @line_number: line number of  the opcode.
+ */
+void print_stack(stack_t **stack, unsigned int line_number)
+{
+	stack_t *currentElement;
+
+	(void) line_number;
+	if (stack == NULL)
+		exit(EXIT_FAILURE);
+	currentElement = *stack;
+	while (currentElement != NULL)
+	{
+		printf("%d\n", currentElement->n);
+		currentElement = currentElement->next;
+	}
 }
 
 /**
- * pall - prints all values on the stack
- * @stack: stack
- * @line_number: line number
+ * pop_top - Adds a node to the stack.
+ * @stack: Pointer to a pointer pointing to top node of the stack.
+ * @line_number: Interger representing the line number of of the opcode.
  */
-
-void pall(stack_t **stack, unsigned int line_number)
+void pop_top(stack_t **stack, unsigned int line_number)
 {
-	stack_t *current = *stack;
+	stack_t *currentElement;
 
-	while (current != NULL)
-	{
-		printf("%d\n", current->n);
-		current = current->next;
-	}
-	(void)line_number;
+	if (stack == NULL || *stack == NULL)
+		more_err(7, line_number);
+
+	currentElement = *stack;
+	*stack = currentElement->next;
+	if (*stack != NULL)
+		(*stack)->prev = NULL;
+	free(currentElement);
 }
+
+/**
+ * print_top - Prints the top node of the stack.
+ * @stack: Pointer to a pointer pointing to top node of the stack.
+ * @line_number: Interger representing the line number of of the opcode.
+ */
+void print_top(stack_t **stack, unsigned int line_number)
+{
+	if (stack == NULL || *stack == NULL)
+		more_err(6, line_number);
+	printf("%d\n", (*stack)->n);
+}
+
