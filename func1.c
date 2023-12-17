@@ -60,10 +60,7 @@ void parse(FILE *f, stack_t **stack)
 		line_number++;
 		command = strtok(line, " \t\n");
 		if (command == NULL)
-		{
-			free(line);
 			continue;
-		}
 		helper.arg = strtok(NULL, " \t\n");
 		while (funs[i].opcode != NULL)
 		{
