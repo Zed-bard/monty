@@ -49,7 +49,7 @@ void parse(FILE *f, stack_t **stack)
 {
 	int i = 0;
 	instruction_t funs[] = {{"push", push}, {"pall", pall}, {"pop", pop},
-				{"pint", pint}, {NULL, NULL}};
+				{"pint", pint}, {"swap", swap}, {NULL, NULL}};
 	char *line = NULL;
 	unsigned int line_number = 0;
 	char *command = NULL;
